@@ -3,7 +3,9 @@ import {
   AbsoluteFill,
   Composition,
   Easing,
+  Html5Audio,
   Sequence,
+  staticFile,
   interpolate,
   spring,
   useCurrentFrame,
@@ -27,14 +29,14 @@ const MONO = "'JetBrains Mono', 'DejaVu Sans Mono', Menlo, monospace";
 
 const FPS = 30;
 const SCENES = {
-  hook: { from: 0, dur: 90 },
-  arrive: { from: 90, dur: 150 },
-  read: { from: 240, dur: 150 },
-  lookup: { from: 390, dur: 210 },
-  forward: { from: 600, dur: 180 },
-  recap: { from: 780, dur: 150 },
+  hook: { from: 0, dur: 225 },
+  arrive: { from: 225, dur: 150 },
+  read: { from: 375, dur: 150 },
+  lookup: { from: 525, dur: 465 },
+  forward: { from: 990, dur: 180 },
+  recap: { from: 1170, dur: 150 },
 };
-const TOTAL = 930;
+const TOTAL = 1320;
 
 // ---------- Helpers ----------
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -262,7 +264,7 @@ const Hook: React.FC = () => {
   const f = useCurrentFrame();
   const o = useFadeInOut(SCENES.hook.dur);
   const p1 = usePop(0);
-  const p2 = usePop(18);
+  const p2 = usePop(95);
   const bob = Math.sin(f / 8) * 14;
   return (
     <AbsoluteFill style={{ opacity: o, alignItems: "center", justifyContent: "center" }}>
@@ -422,8 +424,8 @@ const Lookup: React.FC = () => {
   const f = useCurrentFrame();
   const o = useFadeInOut(SCENES.lookup.dur);
   const tableP = usePop(5);
-  const rowStart = 35;
-  const rowStep = 35;
+  const rowStart = 70;
+  const rowStep = 60;
   return (
     <AbsoluteFill style={{ opacity: o }}>
       <StepTitle step="Step 3" title="Check the routing table" />
@@ -747,6 +749,7 @@ export const MyComponent: React.FC = () => {
       <Background />
       <Sequence from={SCENES.hook.from} durationInFrames={SCENES.hook.dur}>
         <Hook />
+        <Html5Audio src={staticFile("vo/1-hook.mp3")} />
       </Sequence>
       <Sequence from={SCENES.arrive.from} durationInFrames={SCENES.arrive.dur}>
         <Arrive />
@@ -756,6 +759,7 @@ export const MyComponent: React.FC = () => {
       </Sequence>
       <Sequence from={SCENES.lookup.from} durationInFrames={SCENES.lookup.dur}>
         <Lookup />
+        <Html5Audio src={staticFile("vo/4-lookup.mp3")} />
       </Sequence>
       <Sequence from={SCENES.forward.from} durationInFrames={SCENES.forward.dur}>
         <Forward />
